@@ -10,7 +10,7 @@
   <a href="https://github.com/interactive-ssr/client/blob/master/main.org">ISSR</a>
   for this tutorial, so make sure that you have a
   <a href="https://lisp-lang.org/">Common Lisp</a>
-  <a href="http://sbcl.org/platform-table.html">compiler</a>
+  <a href="http://sbcl.org/platform-table.html"> compiler</a>
   installed as well as
   <a href="https://www.quicklisp.org/beta/#installation">Quicklisp</a>.
   Then load the libraries we need: hunchenissr and
@@ -21,7 +21,7 @@
   and enter the following to load the libraries and import the required symbols.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span>ql:quickload <span class="extra">'</span><span class="rainbow-delimiters-depth-2">(</span>hunchenissr markup<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span>
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defpackage</span> <span class="type">todo-demo</span>
   <span class="rainbow-delimiters-depth-2">(</span><span class="builtin">:use</span> <span class="extra">#</span>:<span class="doc">cl</span> <span class="extra">#</span>:<span class="doc">markup</span><span class="rainbow-delimiters-depth-2">)</span>
@@ -40,7 +40,7 @@
   Enter the package name-space and enable HTML syntax.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">in-package</span> <span class="extra">#</span>:<span class="doc">todo-demo</span><span class="rainbow-delimiters-depth-1">)</span>
 <span class="rainbow-delimiters-depth-1">(</span>markup:enable-reader<span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
@@ -54,7 +54,7 @@
   in the <code>resources/</code> folder.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defparameter</span> <span class="variable-name">server</span>
   <span class="rainbow-delimiters-depth-2">(</span>start <span class="rainbow-delimiters-depth-3">(</span>make-instance <span class="extra">'</span>easy-acceptor
                         <span class="builtin">:port</span> 8080
@@ -64,16 +64,16 @@
 <h2>Making A List</h2>
 
 <p>
-  For now we will use a global variable for out list.
+  For now we will use a global variable for our list.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defparameter</span> <span class="variable-name">todos</span> <span class="rainbow-delimiters-depth-2">(</span>list<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
 <p>
   Define an endpoint to go to in the browser.
 </p>
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
     <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
 </span>     <span class="rainbow-delimiters-depth-2">)</span>
@@ -84,7 +84,7 @@
    Setup ISSR connection. See the documentation for more information.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span>write-html
  &lt;<span class="function-name">html</span>&gt;
    &lt;<span class="function-name">head</span>&gt;
@@ -102,7 +102,7 @@
   calls a Lisp function and dumps each element of the resulting list into HTML.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 &lt;<span class="function-name">body</span>&gt;
   &lt;<span class="function-name">h1</span>&gt;To Do List&lt;/<span class="function-name">h1</span>&gt;
   &lt;<span class="function-name">ul</span>&gt;
@@ -131,7 +131,7 @@
   was clicked.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
     &lt;<span class="function-name">input</span> <span class="constant">name</span>=<span class="string">"new-task"</span>
            <span class="constant">placeholder</span>=<span class="string">"New Task"</span>/&gt;
     &lt;<span class="function-name">button</span> <span class="constant">action</span>=<span class="string">"add-new-task"</span>
@@ -146,7 +146,7 @@
    Let's make use of this by adding some GET parameters.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
     <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
 </span>     add-new-task new-task<span class="rainbow-delimiters-depth-2">)</span></code-sample>
@@ -155,7 +155,7 @@
    Now, when
    <code>rr</code>
    function is called by clicking the button, the
-   <code>>add-new-task</code>
+   <code>add-new-task</code>
    variable will have the value
    <code>"add"</code>,
    and the
@@ -164,10 +164,10 @@
 </p>
 
 <p>
-  We don't want to add an empty task so let us add a local variable to calculate if we should add the contents of the check box.
+  We don't want to add an empty task, so let's use a local variable to calculate if we should add the contents of the text box.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">let</span> <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">define local variables here
 </span>      <span class="rainbow-delimiters-depth-3">(</span>adding-new-task
         <span class="rainbow-delimiters-depth-4">(</span>and add-new-task new-task
@@ -179,7 +179,7 @@
    Now that we can easily know when we should add an item to the todo list, let us add it.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> adding-new-task
   <span class="rainbow-delimiters-depth-2">(</span>setf todos <span class="rainbow-delimiters-depth-3">(</span>append todos <span class="rainbow-delimiters-depth-4">(</span>list new-task<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
@@ -193,20 +193,19 @@
   To mark items off the list, we will use a toggle button that will strike out the text. We also need to store the information of which items have been checked already. To keep track of which items are checked, instead of todos being a list of strings, it will be a list of lists where the first item of each sub-list is the checked state and the second item of each sub-list is the string. It should look like this:
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="rainbow-delimiters-depth-2">(</span>t <span class="string">"task1"</span><span class="rainbow-delimiters-depth-2">)</span>    <span class="comment-delimiter">;; </span><span class="comment">checked
-</span> <span class="rainbow-delimiters-depth-2">(</span>nil <span class="string">"task2"</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span> <span class="comment-delimiter">;; </span><span class="comment">not checked
-</span></code-sample>
+</span> <span class="rainbow-delimiters-depth-2">(</span>nil <span class="string">"task2"</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span> <span class="comment-delimiter">;; </span><span class="comment">not checked</span></code-sample>
 
 <p>
    To make sure that string already in todos don't interfere with this new schema, go ahead and convert it with map at the REPL:
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span class="rainbow-delimiters-depth-2">(</span>map <span class="extra">'</span>list
                             <span class="rainbow-delimiters-depth-3">(</span><span class="keyword">lambda</span> <span class="rainbow-delimiters-depth-4">(</span>todo<span class="rainbow-delimiters-depth-4">)</span>
                               <span class="rainbow-delimiters-depth-4">(</span>list nil todo<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span>
-                              todos<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+                            todos<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
 <p>
    We will add the button right in front of the text in the
@@ -215,7 +214,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
    To know if the text should be a strike tag or a regular span tag, we just check the first element of the sub-list (same with the button text).
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="extra">,(progn ",@")</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
         for index from 0 below <span class="rainbow-delimiters-depth-2">(</span>length todos<span class="rainbow-delimiters-depth-2">)</span>
         collect
@@ -236,7 +235,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
    Update our GET parameters so that when the button is clicked the value of the check variable will be the index of task we need to toggle.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
     <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
 </span>     add-new-task new-task check<span class="rainbow-delimiters-depth-2">)</span></code-sample>
@@ -248,7 +247,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
    the check variable.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> <span class="rainbow-delimiters-depth-2">(</span>and check <span class="rainbow-delimiters-depth-3">(</span>not <span class="rainbow-delimiters-depth-4">(</span>str:emptyp check<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span>
   <span class="rainbow-delimiters-depth-2">(</span><span class="keyword">let*</span> <span class="rainbow-delimiters-depth-3">(</span><span class="rainbow-delimiters-depth-4">(</span>check <span class="rainbow-delimiters-depth-5">(</span>parse-integer check<span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span>
          <span class="rainbow-delimiters-depth-4">(</span>todo <span class="rainbow-delimiters-depth-5">(</span>elt todos check<span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span>
@@ -265,9 +264,9 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
   To make this change all we need to do is remove the global todos (at the REPL),
 </p>
 
-<strike><code>(defparameter todos (list))</code></strike>
+<code-sample theme=theme >
+<strike><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defparameter</span> <span class="variable-name">todos</span> <span class="rainbow-delimiters-depth-2">(</span>list<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></strike>
 
-<code-sample>
 TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">setq</span> todos nil<span class="rainbow-delimiters-depth-1">)</span>
 TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
@@ -275,7 +274,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span cl
   start the session at the beginning of our easy-handler, make the todos list as a local variable retrived from the session,
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span>start-session<span class="rainbow-delimiters-depth-1">)</span>
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">let</span> <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">define local variables here
 </span>      <span class="rainbow-delimiters-depth-3">(</span>todos <span class="rainbow-delimiters-depth-4">(</span>session-value <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span></code-sample>
@@ -284,7 +283,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span cl
   and update the session variable (do this after toggling the checks).
 </p>
 
-<code-sample>
+<code-sample theme=theme >
   <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">setf</span> <span class="rainbow-delimiters-depth-2">(</span>session-value <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-2">)</span> todos<span class="rainbow-delimiters-depth-1">)</span></code-sample>
 
 <p>
@@ -304,7 +303,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span cl
   will force the update.
 </p>
 
-<code-sample>
+<code-sample theme=theme >
 &lt;<span class="function-name">input</span> <span class="constant">name</span>=<span class="string">"new-task"</span>
        <span class="constant">value</span>=<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> adding-new-task
                <span class="string">""</span><span class="rainbow-delimiters-depth-1">)</span>
