@@ -85,5 +85,7 @@
     (theme)
   (write-html
     <php:tutorial title="To Do List Tutorial | ISSR"
-                  body-file="tutorial-body.html"
+                  body-file=(merge-pathnames
+                             "tutorial-body.html"
+                             *default-pathname-defaults*)
                   theme=theme />))
