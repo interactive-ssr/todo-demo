@@ -82,6 +82,7 @@
      </html>)))
 
 (define-easy-handler (todo-tutorial :uri "/todo-tutorial")
+    (theme)
     <php:tutorial title="To Do List Tutorial | ISSR"
                   body-file="tutorial-body.html"
-                  theme="LIGHT"/>)
+                  theme=theme />)
