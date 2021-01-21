@@ -96,9 +96,9 @@
 <p>
   Render the todos using HTML generation. (Yes I know it is an empty list right now.)
   For now we will assume the todos is just a list of strings. The
-  <code>,()</code>
+  <code>,(progn ",()")</code>
   calls a Lisp function and dumps the result into HTML. The
-  <code>,@()</code>
+  <code>,(progn ",@()")</code>
   calls a Lisp function and dumps each element of the resulting list into HTML.
 </p>
 
