@@ -50,6 +50,7 @@
          <script noupdate="t">
            ,(format nil "setup(~a,~a)" *id* *ws-port*)
          </script>
+         <title>,(progn "To Do List | ISSR")</title>
        </head>
        <body>
          <h1>To Do List</h1>
