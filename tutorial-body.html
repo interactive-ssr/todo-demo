@@ -106,7 +106,7 @@
 &lt;<span class="function-name">body</span>&gt;
   &lt;<span class="function-name">h1</span>&gt;To Do List&lt;/<span class="function-name">h1</span>&gt;
   &lt;<span class="function-name">ul</span>&gt;
-    <span class="extra">,@</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
+    <span class="extra">,(progn ",@")</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
             collect
             &lt;<span class="function-name">li</span>&gt;
               <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span><span class="keyword">progn</span> todo<span class="rainbow-delimiters-depth-2">)</span>
@@ -216,7 +216,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
 </p>
 
 <code-sample>
-<span class="extra">,@</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
+<span class="extra">,(progn ",@")</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
         for index from 0 below <span class="rainbow-delimiters-depth-2">(</span>length todos<span class="rainbow-delimiters-depth-2">)</span>
         collect
         &lt;<span class="function-name">li</span>&gt;
