@@ -1,0 +1,324 @@
+<body>
+<h1><a href="/todo">To Do List</a> Web Page Tutorial Using ISSR</h1>
+
+<h2>Setup</h2>
+
+<p>
+  We will use the
+  <a href="https://github.com/interactive-ssr/hunchenissr">Hunchenissr</a>
+  implementation of
+  <a href="https://github.com/interactive-ssr/client/blob/master/main.org">ISSR</a>
+  for this tutorial, so make sure that you have a
+  <a href="https://lisp-lang.org/">Common Lisp</a>
+  <a href="http://sbcl.org/platform-table.html">compiler</a>
+  installed as well as
+  <a href="https://www.quicklisp.org/beta/#installation">Quicklisp</a>.
+  Then load the libraries we need: hunchenissr and
+  <a href="https://github.com/moderninterpreters/markup">markup</a>
+  (to generate HTML). Open a file
+  <code>index.lisp</code>
+
+  and enter the following to load the libraries and import the required symbols.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span>ql:quickload <span class="extra">'</span><span class="rainbow-delimiters-depth-2">(</span>hunchenissr markup<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defpackage</span> <span class="type">todo-demo</span>
+  <span class="rainbow-delimiters-depth-2">(</span><span class="builtin">:use</span> <span class="extra">#</span>:<span class="doc">cl</span> <span class="extra">#</span>:<span class="doc">markup</span><span class="rainbow-delimiters-depth-2">)</span>
+  <span class="rainbow-delimiters-depth-2">(</span><span class="builtin">:import-from</span> <span class="extra">#</span>:<span class="doc">hunchentoot</span>
+                start-session
+                session-value
+                easy-acceptor<span class="rainbow-delimiters-depth-2">)</span>
+  <span class="rainbow-delimiters-depth-2">(</span><span class="builtin">:import-from</span> <span class="extra">#</span>:<span class="doc">hunchenissr</span>
+                define-easy-handler
+                *id*
+                *ws-port*
+                start
+                stop<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+  Enter the package name-space and enable HTML syntax.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">in-package</span> <span class="extra">#</span>:<span class="doc">todo-demo</span><span class="rainbow-delimiters-depth-1">)</span>
+<span class="rainbow-delimiters-depth-1">(</span>markup:enable-reader<span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+  Start our
+  <a href="https://edicl.github.io/hunchentoot/">Hunchentoot</a>
+  HTTP server on port 8080 with websockets listening on port 4433, and serving static files in the
+  <code>resources/</code>
+  folder. Make sure you are serving
+  <a href="/issr.js" download="issr.js">issr.js</a>
+  in the <code>resources/</code> folder.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defparameter</span> <span class="variable-name">server</span>
+  <span class="rainbow-delimiters-depth-2">(</span>start <span class="rainbow-delimiters-depth-3">(</span>make-instance <span class="extra">'</span>easy-acceptor
+                        <span class="builtin">:port</span> 8080
+                        <span class="builtin">:document-root</span> <span class="string">"resources/"</span><span class="rainbow-delimiters-depth-3">)</span>
+         <span class="builtin">:ws-port</span> 4433<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<h2>Making A List</h2>
+
+<p>
+  For now we will use a global variable for out list.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">defparameter</span> <span class="variable-name">todos</span> <span class="rainbow-delimiters-depth-2">(</span>list<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+  Define an endpoint to go to in the browser.
+</p>
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
+    <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
+</span>     <span class="rainbow-delimiters-depth-2">)</span>
+  <span class="rainbow-delimiters-depth-2">(</span><span class="keyword">let</span> <span class="rainbow-delimiters-depth-3">(</span><span class="comment-delimiter">;; </span><span class="comment">define local variables here
+</span>        <span class="rainbow-delimiters-depth-3">)</span></code-sample>
+
+<p>
+   Setup ISSR connection. See the documentation for more information.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span>write-html
+ &lt;<span class="function-name">html</span>&gt;
+   &lt;<span class="function-name">head</span>&gt;
+     &lt;<span class="function-name">script</span> <span class="constant">src</span>=<span class="string">"/issr.js"</span>&gt;&lt;/<span class="function-name">script</span>&gt;
+     &lt;<span class="function-name">script</span> <span class="constant">noupdate</span>=<span class="string">"t"</span>&gt;
+       <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span>format nil <span class="string">"setup(~a,~a)"</span> *id* *ws-port*<span class="rainbow-delimiters-depth-2">)</span>
+     &lt;/<span class="function-name">script</span>&gt;
+   &lt;/<span class="function-name">head</span>&gt;</code-sample>
+<p>
+  Render the todos using HTML generation. (Yes I know it is an empty list right now.)
+  For now we will assume the todos is just a list of strings. The
+  <code>,()</code>
+  calls a Lisp function and dumps the result into HTML. The
+  <code>,@()</code>
+  calls a Lisp function and dumps each element of the resulting list into HTML.
+</p>
+
+<code-sample>
+&lt;<span class="function-name">body</span>&gt;
+  &lt;<span class="function-name">h1</span>&gt;To Do List&lt;/<span class="function-name">h1</span>&gt;
+  &lt;<span class="function-name">ul</span>&gt;
+    <span class="extra">,@</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
+            collect
+            &lt;<span class="function-name">li</span>&gt;
+              <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span><span class="keyword">progn</span> todo<span class="rainbow-delimiters-depth-2">)</span>
+            &lt;/<span class="function-name">li</span>&gt;<span class="rainbow-delimiters-depth-1">)</span>
+  &lt;/<span class="function-name">ul</span>&gt;</code-sample>
+
+<p>
+  Add a text box and a button for adding new tasks to the list. The
+  <code>name</code>
+  attribute of the input will be used to identify what the user typed in the text box.
+  The
+  <code>action</code>
+  attribute of the button will be used to know when the button has been clicked.
+  The
+  <code>onclick</code>
+  attribute of the button says to update the page when button is clicked and this
+  <code>this</code>
+  says to include the information that the button (with
+  <code>action="add-new-task"</code>
+  and
+  <code>value="add"</code>)
+  was clicked.
+</p>
+
+<code-sample>
+    &lt;<span class="function-name">input</span> <span class="constant">name</span>=<span class="string">"new-task"</span>
+           <span class="constant">placeholder</span>=<span class="string">"New Task"</span>/&gt;
+    &lt;<span class="function-name">button</span> <span class="constant">action</span>=<span class="string">"add-new-task"</span>
+            <span class="constant">value</span>=<span class="string">"add"</span>
+            <span class="constant">onclick</span>=<span class="string">"rr(this)"</span>&gt;
+      Add
+    &lt;/<span class="function-name">button</span>&gt;
+  &lt;/<span class="function-name">body</span>&gt;
+&lt;/<span class="function-name">html</span>&gt;<span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+   Let's make use of this by adding some GET parameters.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
+    <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
+</span>     add-new-task new-task<span class="rainbow-delimiters-depth-2">)</span></code-sample>
+
+<p>
+   Now, when
+   <code>rr</code>
+   function is called by clicking the button, the
+   <code>>add-new-task</code>
+   variable will have the value
+   <code>"add"</code>,
+   and the
+   <code>new-task</code>
+   variable will be whatever the user typed in the text box.
+</p>
+
+<p>
+  We don't want to add an empty task so let us add a local variable to calculate if we should add the contents of the check box.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">let</span> <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">define local variables here
+</span>      <span class="rainbow-delimiters-depth-3">(</span>adding-new-task
+        <span class="rainbow-delimiters-depth-4">(</span>and add-new-task new-task
+             <span class="rainbow-delimiters-depth-5">(</span>string= add-new-task <span class="string">"add"</span><span class="rainbow-delimiters-depth-5">)</span>
+             <span class="rainbow-delimiters-depth-5">(</span>not <span class="rainbow-delimiters-depth-6">(</span>str:emptyp
+                   <span class="rainbow-delimiters-depth-7">(</span>str:trim new-task<span class="rainbow-delimiters-depth-7">)</span><span class="rainbow-delimiters-depth-6">)</span><span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span></code-sample>
+
+<p>
+   Now that we can easily know when we should add an item to the todo list, let us add it.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> adding-new-task
+  <span class="rainbow-delimiters-depth-2">(</span>setf todos <span class="rainbow-delimiters-depth-3">(</span>append todos <span class="rainbow-delimiters-depth-4">(</span>list new-task<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+   You should be able to add items to the list now.
+</p>
+
+<h2>Checking It Twice</h2>
+
+<p>
+  To mark items off the list, we will use a toggle button that will strike out the text. We also need to store the information of which items have been checked already. To keep track of which items are checked, instead of todos being a list of strings, it will be a list of lists where the first item of each sub-list is the checked state and the second item of each sub-list is the string. It should look like this:
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="rainbow-delimiters-depth-2">(</span>t <span class="string">"task1"</span><span class="rainbow-delimiters-depth-2">)</span>    <span class="comment-delimiter">;; </span><span class="comment">checked
+</span> <span class="rainbow-delimiters-depth-2">(</span>nil <span class="string">"task2"</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span> <span class="comment-delimiter">;; </span><span class="comment">not checked
+</span></code-sample>
+
+<p>
+   To make sure that string already in todos don't interfere with this new schema, go ahead and convert it with map at the REPL:
+</p>
+
+<code-sample>
+TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span class="rainbow-delimiters-depth-2">(</span>map <span class="extra">'</span>list
+                            <span class="rainbow-delimiters-depth-3">(</span><span class="keyword">lambda</span> <span class="rainbow-delimiters-depth-4">(</span>todo<span class="rainbow-delimiters-depth-4">)</span>
+                              <span class="rainbow-delimiters-depth-4">(</span>list nil todo<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span>
+                              todos<span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+   We will add the button right in front of the text in the
+   <code>li</code>
+   tag. To know which task to toggle, we will use the index of the task as the value of the button.
+   To know if the text should be a strike tag or a regular span tag, we just check the first element of the sub-list (same with the button text).
+</p>
+
+<code-sample>
+<span class="extra">,@</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
+        for index from 0 below <span class="rainbow-delimiters-depth-2">(</span>length todos<span class="rainbow-delimiters-depth-2">)</span>
+        collect
+        &lt;<span class="function-name">li</span>&gt;
+          &lt;<span class="function-name">button</span> <span class="constant">action</span>=<span class="string">"check"</span>
+                  <span class="constant">value</span>=index
+                  <span class="constant">onclick</span>=<span class="string">"rr(this)"</span>&gt;
+            <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span><span class="keyword">if</span> <span class="rainbow-delimiters-depth-3">(</span>first todo<span class="rainbow-delimiters-depth-3">)</span>
+                 <span class="string">"Mark Not Done"</span>
+                 <span class="string">"Mark Done"</span><span class="rainbow-delimiters-depth-2">)</span>
+          &lt;/<span class="function-name">button</span>&gt;
+          <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span><span class="keyword">if</span> <span class="rainbow-delimiters-depth-3">(</span>first todo<span class="rainbow-delimiters-depth-3">)</span>
+               &lt;<span class="function-name">strike</span>&gt;<span class="extra">,</span><span class="rainbow-delimiters-depth-3">(</span>second todo<span class="rainbow-delimiters-depth-3">)</span>&lt;/<span class="function-name">strike</span>&gt;
+               &lt;<span class="function-name">span</span>&gt;<span class="extra">,</span><span class="rainbow-delimiters-depth-3">(</span>second todo<span class="rainbow-delimiters-depth-3">)</span>&lt;/<span class="function-name">span</span>&gt;<span class="rainbow-delimiters-depth-2">)</span>
+        &lt;/<span class="function-name">li</span>&gt;<span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+   Update our GET parameters so that when the button is clicked the value of the check variable will be the index of task we need to toggle.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
+    <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
+</span>     add-new-task new-task check<span class="rainbow-delimiters-depth-2">)</span></code-sample>
+
+<p>
+   Right after we add a new task, we will check if we need to toggle the state of a task and do the toggle if necessary.
+   Since HTML attributes are always strings, we have to
+   <code>parse-integer</code>
+   the check variable.
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> <span class="rainbow-delimiters-depth-2">(</span>and check <span class="rainbow-delimiters-depth-3">(</span>not <span class="rainbow-delimiters-depth-4">(</span>str:emptyp check<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span>
+  <span class="rainbow-delimiters-depth-2">(</span><span class="keyword">let*</span> <span class="rainbow-delimiters-depth-3">(</span><span class="rainbow-delimiters-depth-4">(</span>check <span class="rainbow-delimiters-depth-5">(</span>parse-integer check<span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span>
+         <span class="rainbow-delimiters-depth-4">(</span>todo <span class="rainbow-delimiters-depth-5">(</span>elt todos check<span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span>
+    <span class="rainbow-delimiters-depth-3">(</span>setf <span class="rainbow-delimiters-depth-4">(</span>first todo<span class="rainbow-delimiters-depth-4">)</span>
+          <span class="rainbow-delimiters-depth-4">(</span>not <span class="rainbow-delimiters-depth-5">(</span>first todo<span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span><span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<h2>Global Variables Are Naughty</h2>
+
+<p>
+  Instead of having a global todo list that everyone who goes to your web page will share, we will use a session variable so each user can have his or her own todo list.
+</p>
+
+<p>
+  To make this change all we need to do is remove the global todos (at the REPL),
+</p>
+
+<strike><code>(defparameter todos (list))</code></strike>
+
+<code-sample>
+TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">setq</span> todos nil<span class="rainbow-delimiters-depth-1">)</span>
+TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+  start the session at the beginning of our easy-handler, make the todos list as a local variable retrived from the session,
+</p>
+
+<code-sample>
+<span class="rainbow-delimiters-depth-1">(</span>start-session<span class="rainbow-delimiters-depth-1">)</span>
+<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">let</span> <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">define local variables here
+</span>      <span class="rainbow-delimiters-depth-3">(</span>todos <span class="rainbow-delimiters-depth-4">(</span>session-value <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span></code-sample>
+
+<p>
+  and update the session variable (do this after toggling the checks).
+</p>
+
+<code-sample>
+  <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">setf</span> <span class="rainbow-delimiters-depth-2">(</span>session-value <span class="extra">'</span>todos<span class="rainbow-delimiters-depth-2">)</span> todos<span class="rainbow-delimiters-depth-1">)</span></code-sample>
+
+<p>
+  Now, each person should have a unique todo list.
+</p>
+
+<h2>BONUS: Empty Text Box When Adding To The List</h2>
+
+<p>
+  I found it to be quite nice to empty the text box when adding to the list. All we have to do is add two attributes to the text box. The
+  <code>value</code>
+  attribute set to empty string when we are adding a new task, and the
+  <code>update</code>
+  attribute to force the client to update the value.
+  Since the server is unaware that the value of the text box actually ever changed, it thinks the value being empty string is nothing new and won't update it, but the update attribute (non
+  <code>nil</code>)
+  will force the update.
+</p>
+
+<code-sample>
+&lt;<span class="function-name">input</span> <span class="constant">name</span>=<span class="string">"new-task"</span>
+       <span class="constant">value</span>=<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> adding-new-task
+               <span class="string">""</span><span class="rainbow-delimiters-depth-1">)</span>
+       <span class="constant">update</span>=adding-new-task
+       <span class="constant">placeholder</span>=<span class="string">"New Task"</span>/&gt;</code-sample>
+
+<h2>What Is Next?</h2>
+
+<ul>
+  <li>Add functionality to delete tasks</li>
+  <li>Move around and sort tasks</li>
+  <li>Use a database to store the todo lists so they don't expire</li>
+  <li>
+    <a href="/backgammon-tutorial">Make Backgammon game with ISSR</a>
+  </li>
+</ul>
+</body>

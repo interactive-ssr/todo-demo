@@ -21,9 +21,11 @@
          :ws-port 4433))
 
 (define-easy-handler (todo :uri "/todo")
-    (add-new-task new-task check)
+    (;; GET parameter names go here
+     add-new-task new-task check)
   (start-session)
-  (let ((todos (session-value 'todos))
+  (let (;; define local variables here
+        (todos (session-value 'todos))
         ;; calculate if we are to add a new task
         (adding-new-task
           (and add-new-task new-task
