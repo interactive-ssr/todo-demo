@@ -1,4 +1,3 @@
-(ql:quickload '(hunchenissr markup))
 (defpackage todo-demo
   (:use #:cl #:markup)
   (:import-from #:hunchentoot
@@ -13,12 +12,6 @@
                 stop))
 (in-package #:todo-demo)
 (markup:enable-reader)
-
-(defparameter server
-  (start (make-instance 'easy-acceptor
-                        :port 8080
-                        :document-root "resources/")
-         :ws-port 4433))
 
 (define-easy-handler (todo :uri "/todo")
     (;; GET parameter names go here
