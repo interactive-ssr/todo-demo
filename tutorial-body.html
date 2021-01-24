@@ -149,7 +149,7 @@
 <code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
     <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
-</span>     add-new-task new-task<span class="rainbow-delimiters-depth-2">)</span></code-sample>
+</span>     <mark>add-new-task new-task</mark><span class="rainbow-delimiters-depth-2">)</span></code-sample>
 
 <p>
    Now, when
@@ -216,11 +216,11 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
 
 <code-sample theme=theme >
 <span class="extra">,(progn ",@")</span><span class="rainbow-delimiters-depth-1">(</span><span class="keyword">loop</span> for todo in todos
-        for index from 0 below <span class="rainbow-delimiters-depth-2">(</span>length todos<span class="rainbow-delimiters-depth-2">)</span>
+        <mark>for index from 0 below <span class="rainbow-delimiters-depth-2">(</span>length todos<span class="rainbow-delimiters-depth-2">)</span></mark>
         collect
         &lt;<span class="function-name">li</span>&gt;
           &lt;<span class="function-name">button</span> <span class="constant">action</span>=<span class="string">"check"</span>
-                  <span class="constant">value</span>=index
+                  <mark><span class="constant">value</span>=index</mark>
                   <span class="constant">onclick</span>=<span class="string">"rr(this)"</span>&gt;
             <span class="extra">,</span><span class="rainbow-delimiters-depth-2">(</span><span class="keyword">if</span> <span class="rainbow-delimiters-depth-3">(</span>first todo<span class="rainbow-delimiters-depth-3">)</span>
                  <span class="string">"Mark Not Done"</span>
@@ -238,7 +238,7 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>setq todos <span 
 <code-sample theme=theme >
 <span class="rainbow-delimiters-depth-1">(</span><span class="keyword">define-easy-handler</span> <span class="rainbow-delimiters-depth-2">(</span>todo <span class="builtin">:uri</span> <span class="string">"/todo"</span><span class="rainbow-delimiters-depth-2">)</span>
     <span class="rainbow-delimiters-depth-2">(</span><span class="comment-delimiter">;; </span><span class="comment">GET parameter names go here
-</span>     add-new-task new-task check<span class="rainbow-delimiters-depth-2">)</span></code-sample>
+</span>     add-new-task new-task <mark>check</mark><span class="rainbow-delimiters-depth-2">)</span></code-sample>
 
 <p>
    Right after we add a new task, we will check if we need to toggle the state of a task and do the toggle if necessary.
