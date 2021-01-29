@@ -318,7 +318,9 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span cl
   Now, each person should have a unique todo list.
 </p>
 
-<h2>BONUS: Empty Text Box When Adding To The List</h2>
+<h2>Make Adding Tasks Nicer</h2>
+
+<h3>Clear Text Box</h3>
 
 <p>
   I found it to be quite nice to empty the text box when adding to the list. All we have to do is add two attributes to the text box. The
@@ -337,6 +339,45 @@ TODO-DEMO&gt; <span class="rainbow-delimiters-depth-1">(</span>unintern <span cl
                <span class="string">""</span><span class="rainbow-delimiters-depth-1">)</span>
        <span class="constant">update</span>=adding-new-task
        <span class="constant">placeholder</span>=<span class="string">"New Task"</span>/&gt;</code-sample>
+
+<h3>Press Enter To Add A Task</h3>
+<p>
+  Wouldn't it be nice to press the Enter button to add a new task instead of pressing the add-task button?
+  This is where knowledge of HTML events and a
+  <em>slight</em>
+  bit of JavaScript is useful.
+  We will use the
+  <code>onkeydown</code>
+  event and check the key that was pressed.
+  The Enter button is keycode 13, so when the button the user presses is 13, we make a
+  <code>rr</code>
+  call that is exactly like the one called from the add-task button.
+</p>
+
+<code-sample theme=theme >
+&lt;<span class="function-name">input</span> <span class="constant">name</span>=<span class="string">"new-task"</span>
+       <span class="constant">value</span>=<span class="rainbow-delimiters-depth-1">(</span><span class="keyword">when</span> adding-new-task
+               <span class="string">""</span><span class="rainbow-delimiters-depth-1">)</span>
+       <span class="constant">update</span>=adding-new-task
+       <span class="constant">placeholder</span>=<span class="string">"New Task"</span>
+       <span class="constant">onkeydown</span>=<span class="string">"</span><span class="keyword">if</span> (event.keyCode <span class="extra">==</span> 13)
+                    rr({action<span class="extra">:</span><span class="string">'add-new-task'</span><span class="extra">,</span>
+                        value<span class="extra">:</span><span class="string">'add'</span>})<span class="string">"</span>/&gt;</code-sample>
+
+<p>
+   We have to use a JavaScript object with
+   <code>action</code>
+   and
+   <code>value</code>
+   instead of just
+   <code>this</code>
+   because
+   <code>this</code>
+   would refer to the input (with
+   <code>name="new-task"</code>)
+   rather than the button (with
+   <code>action="add-new-task"</code>).
+</p>
 
 <h2>What Is Next?</h2>
 
