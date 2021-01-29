@@ -72,7 +72,10 @@
                 value=(when adding-new-task
                         "")
                 update=adding-new-task
-                placeholder="New Task"/>
+                placeholder="New Task"
+                onkeydown="if (event.keyCode == 13)
+                             rr({action:'add-new-task',
+                                 value:'add'})"/>
          <button action="add-new-task"
                  value="add"
                  onclick="rr(this)">
