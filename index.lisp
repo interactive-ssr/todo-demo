@@ -48,7 +48,7 @@
        <head>
          <script src="/issr.js"></script>
          <script noupdate="t">
-           ,(format nil "setup(~a,~a)" *id* *ws-port*)
+           ,(format nil "connect(~a, 'ws', ~a)" *id* *ws-port*)
          </script>
          <title>,(progn "To Do List | ISSR")</title>
        </head>
