@@ -23,8 +23,7 @@
         (adding-new-task
           (and add-new-task new-task
                (string= add-new-task "add")
-               (not (str:emptyp
-                     (str:trim new-task))))))
+               (not (str:blankp new-task)))))
     ;; add new task
     (when adding-new-task
       (setf todos (append todos (list (list nil new-task)))))

@@ -192,8 +192,7 @@
 </span>      <span class="rainbow-delimiters-depth-3">(</span>adding-new-task
         <span class="rainbow-delimiters-depth-4">(</span>and add-new-task new-task
              <span class="rainbow-delimiters-depth-5">(</span>string= add-new-task <span class="string">"add"</span><span class="rainbow-delimiters-depth-5">)</span>
-             <span class="rainbow-delimiters-depth-5">(</span>not <span class="rainbow-delimiters-depth-6">(</span>str:emptyp
-                   <span class="rainbow-delimiters-depth-7">(</span>str:trim new-task<span class="rainbow-delimiters-depth-7">)</span><span class="rainbow-delimiters-depth-6">)</span><span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span></pre>
+             <span class="rainbow-delimiters-depth-5">(</span>not <span class="rainbow-delimiters-depth-6">(</span>str:blankp new-task<span class="rainbow-delimiters-depth-6">)</span><span class="rainbow-delimiters-depth-5">)</span><span class="rainbow-delimiters-depth-4">)</span><span class="rainbow-delimiters-depth-3">)</span><span class="rainbow-delimiters-depth-2">)</span></pre>
 
 <p>
    Now that we can easily know when we should add an item to the todo list, let us add it.
